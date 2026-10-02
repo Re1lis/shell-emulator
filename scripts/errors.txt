@@ -1,0 +1,4 @@
+foo
+ls "abc
+cd 'a b' c
+exit

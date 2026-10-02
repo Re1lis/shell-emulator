@@ -1,0 +1,4 @@
+ls
+cd /tmp
+ls -l "my dir"
+exit

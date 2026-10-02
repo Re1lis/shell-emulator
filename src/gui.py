@@ -14,7 +14,25 @@ def add_text(output, text):
     output.see("end")
 
 
-def start_gui():
+def run_script(root, output, script_path):
+    """Выполняет команды из стартового скрипта."""
+    try:
+        with open(script_path, encoding="utf-8-sig") as file:
+            lines = file.read().splitlines()
+    except OSError:
+        add_text(output, f"Ошибка: не удалось открыть {script_path}")
+        return
+    for line in lines:
+        add_text(output, get_prompt() + line)
+        result = run_command(line)
+        if result is None:
+            root.destroy()
+            return
+        if result:
+            add_text(output, result)
+
+
+def start_gui(vfs_path=None, script_path=None):
     """Создаёт окно и запускает эмулятор."""
     root = tk.Tk()
     root.title(get_title())
@@ -24,6 +42,12 @@ def start_gui():
     entry.config(insertbackground="white")
     entry.pack(fill="x")
     entry.focus_set()
+    add_text(output, "[отладка] параметры запуска:")
+    add_text(output, f"[отладка] vfs = {vfs_path or 'не задан'}")
+    add_text(output, f"[отладка] script = {script_path or 'не задан'}")
+
+    if script_path:
+        root.after(100, run_script, root, output, script_path)
 
     def on_enter(event):
         """Обрабатывает нажатие Enter."""

@@ -1,0 +1,6 @@
+ls
+cd /tmp
+ls -l "my dir"
+foo
+ls "abc
+cd 'a b' c
